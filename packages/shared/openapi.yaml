@@ -1,0 +1,87 @@
+openapi: 3.0.3
+info:
+  title: OpenAgent API
+  version: 0.0.1
+servers:
+  - url: http://127.0.0.1:7341
+paths:
+  /health:
+    get:
+      responses:
+        '200':
+          description: OK
+  /config:
+    get:
+      responses:
+        '200':
+          description: Config
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenAgentConfig'
+  /run:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RunRequest'
+      responses:
+        '200':
+          description: Run started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunResponse'
+  /logs:
+    get:
+      parameters:
+        - in: query
+          name: runId
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Logs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogResponse'
+components:
+  schemas:
+    RunRequest:
+      type: object
+      properties:
+        workflow:
+          type: string
+        params:
+          type: object
+          additionalProperties:
+            type: string
+      required: [workflow, params]
+    RunResponse:
+      type: object
+      properties:
+        runId:
+          type: string
+      required: [runId]
+    LogResponse:
+      type: object
+      properties:
+        lines:
+          type: array
+          items:
+            type: string
+        done:
+          type: boolean
+      required: [lines, done]
+    OpenAgentConfig:
+      type: object
+      properties:
+        framework:
+          type: string
+        workflow:
+          type: string
+      required: [framework, workflow]
