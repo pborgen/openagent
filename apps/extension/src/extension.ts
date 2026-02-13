@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import type { LogResponse, RunResponse } from '@openagent/shared';
 
 async function pollLogs(output: vscode.OutputChannel, runId: string) {
   const addr = vscode.workspace.getConfiguration('openagent').get<string>('backendUrl') || 'http://127.0.0.1:7341';
@@ -8,7 +9,7 @@ async function pollLogs(output: vscode.OutputChannel, runId: string) {
   while (!done) {
     try {
       const res = await fetch(`${addr}/logs?runId=${encodeURIComponent(runId)}`);
-      const json = await res.json();
+      const json = (await res.json()) as LogResponse;
       const lines: string[] = json.lines || [];
       done = Boolean(json.done);
 
@@ -36,7 +37,7 @@ async function callBackendRun(output: vscode.OutputChannel) {
       headers: { 'Content-Type': 'application/json' },
       body,
     });
-    const json = await res.json();
+    const json = (await res.json()) as RunResponse;
     output.appendLine(`Run started: ${JSON.stringify(json)}`);
     vscode.window.showInformationMessage(`OpenAgent: run started (${json.runId})`);
     await pollLogs(output, json.runId);

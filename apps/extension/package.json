@@ -1,8 +1,8 @@
 {
-  "name": "openagent",
+  "name": "openagent-extension",
   "displayName": "OpenAgent",
   "description": "Cursor extension to run multi-agent workflows and manage configs.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "openagent",
   "engines": {
     "vscode": "^1.85.0"
@@ -41,6 +41,9 @@
     "package": "vsce package",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js"
+  },
+  "dependencies": {
+    "@openagent/shared": "workspace:*"
   },
   "devDependencies": {
     "@types/vscode": "^1.85.0",
