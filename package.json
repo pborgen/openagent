@@ -2,7 +2,7 @@
   "name": "openagent",
   "displayName": "OpenAgent",
   "description": "Cursor extension to run multi-agent workflows and manage configs.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "openagent",
   "engines": {
     "vscode": "^1.85.0"
@@ -23,7 +23,17 @@
         "command": "openagent.openConfig",
         "title": "OpenAgent: Open Config"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "OpenAgent",
+      "properties": {
+        "openagent.backendUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:7341",
+          "description": "Local OpenAgent backend URL"
+        }
+      }
+    }
   },
   "scripts": {
     "compile": "tsc -p ./",
