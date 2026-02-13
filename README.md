@@ -1,32 +1,16 @@
-# OpenAgent
+# OpenAgent (Monorepo)
 
-Cursor extension to run multi-agent workflows (LangGraph first) and manage configs.
-
-## Plan (next steps)
-1) **Backend service (Go)**: local HTTP service to run workflows and stream logs. ✅
-2) **Extension integration**: command to call backend `/run` and show logs. ✅
-3) **Config management**: workspace config file + settings UI entry. ✅ (basic)
-4) **Logs view**: output channel + optional tree/timeline view. ✅ (basic)
-
-## MVP scope
-- Run workflow + show logs
-- Manage configs/env
-
-## How to build (current)
-- Extension: `npm i` then `npm run compile`
-- Backend: `make backend`
-
-## Config
-Create `openagent.json` in the repo root:
-```json
-{
-  "framework": "langgraph",
-  "workflow": "default"
-}
+## Structure
+```
+apps/
+  extension/   # Cursor/VS Code extension
+  backend/     # Go backend service
+packages/      # future shared packages
 ```
 
-## Endpoints (current stub)
-- `GET /health`
-- `GET /config`
-- `POST /run`
-- `GET /logs?runId=...`
+## Build
+- Extension: `pnpm --dir apps/extension compile`
+- Backend: `pnpm --dir apps/backend build`
+
+## Config
+`apps/extension/openagent.json`

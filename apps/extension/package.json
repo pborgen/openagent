@@ -1,0 +1,50 @@
+{
+  "name": "openagent",
+  "displayName": "OpenAgent",
+  "description": "Cursor extension to run multi-agent workflows and manage configs.",
+  "version": "0.0.2",
+  "publisher": "openagent",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onCommand:openagent.runWorkflow",
+    "onCommand:openagent.openConfig"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "openagent.runWorkflow",
+        "title": "OpenAgent: Run Workflow"
+      },
+      {
+        "command": "openagent.openConfig",
+        "title": "OpenAgent: Open Config"
+      }
+    ],
+    "configuration": {
+      "title": "OpenAgent",
+      "properties": {
+        "openagent.backendUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:7341",
+          "description": "Local OpenAgent backend URL"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.11.30",
+    "typescript": "^5.5.4"
+  }
+}
