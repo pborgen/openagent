@@ -28,7 +28,7 @@ async function pollLogs(output: vscode.OutputChannel, runId: string) {
 
 async function callBackendRun(output: vscode.OutputChannel) {
   const addr = vscode.workspace.getConfiguration('openagent').get<string>('backendUrl') || 'http://127.0.0.1:7341';
-  const body = JSON.stringify({ workflow: 'default', params: {} });
+  const body = JSON.stringify({ workflow: '', params: {} });
 
   try {
     const res = await fetch(`${addr}/run`, {
@@ -58,8 +58,8 @@ export function activate(context: vscode.ExtensionContext) {
 
   const configCmd = vscode.commands.registerCommand('openagent.openConfig', async () => {
     const doc = await vscode.workspace.openTextDocument({
-      language: 'yaml',
-      content: '# OpenAgent config\nframework: langgraph\n',
+      language: 'json',
+      content: JSON.stringify({ framework: 'langgraph', workflow: 'default' }, null, 2),
     });
     await vscode.window.showTextDocument(doc, { preview: false });
   });

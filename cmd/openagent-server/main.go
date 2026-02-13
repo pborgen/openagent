@@ -9,6 +9,8 @@ import (
 	"strconv"
 	"sync"
 	"time"
+
+	"openagent/internal/config"
 )
 
 type RunRequest struct {
@@ -80,6 +82,17 @@ func main() {
 		w.Write([]byte("ok"))
 	})
 
+	mux.HandleFunc("/config", func(w http.ResponseWriter, r *http.Request) {
+		cfg, err := config.Load()
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("invalid config"))
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(cfg)
+	})
+
 	mux.HandleFunc("/run", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			w.WriteHeader(http.StatusMethodNotAllowed)
@@ -91,8 +104,14 @@ func main() {
 			w.Write([]byte("invalid json"))
 			return
 		}
+		cfg, _ := config.Load()
+		workflow := req.Workflow
+		if workflow == "" {
+			workflow = cfg.Workflow
+		}
 		runID := store.createRun()
-		store.append(runID, "starting workflow: "+req.Workflow)
+		store.append(runID, "starting workflow: "+workflow)
+		store.append(runID, "framework: "+cfg.Framework)
 		go func() {
 			for i := 1; i <= 5; i++ {
 				store.append(runID, "step "+strconv.Itoa(i)+" complete")
