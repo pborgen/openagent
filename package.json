@@ -5,6 +5,7 @@
   "scripts": {
     "build:extension": "pnpm --dir apps/extension compile",
     "build:backend": "pnpm --dir apps/backend build",
-    "build": "pnpm build:extension && pnpm build:backend"
+    "build:shared": "pnpm --dir packages/shared build",
+    "build": "pnpm build:shared && pnpm build:extension && pnpm build:backend"
   }
 }
